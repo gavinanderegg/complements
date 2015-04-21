@@ -129,7 +129,8 @@ $(document).ready(function() {
 			swal({
 				'title': '',
 				'text': compQueue.pop().get('text'),
-				'confirmButtonText': 'Thanks!'
+				'confirmButtonText': 'Thanks!',
+				'confirmButtonColor': '#4162a8'
 			});
 			$('#button').removeClass('working');
 			$('#button').on('click', getComplment);
