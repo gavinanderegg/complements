@@ -63,7 +63,7 @@
 		<h1>Compl-o-tron Pro-thousand</h1>
 		
 		<div class="button">
-			<button class="punch">Complement me!</button>
+			<button class="punch" id="button">Complement me!</button>
 		</div>
 		
 		<div id="vase">
@@ -91,13 +91,36 @@ $(document).ready(function() {
 		}
 	});
 	
-	var p = $('#paper');
-	var pOffsetTop = p.offset().top;
-	var pTop = p.css('top').replace(/[^-\d\.]/g, '');
+	var getComplment = function() {
+		$('#button').addClass('working');
+		$('#button').off('click');
+		
+		var p = $('#paper');
+		p.css('top', '38px');
+		p.css('left', '84px');
+		var pOffsetTop = p.offset().top;
+		var pTop = p.css('top').replace(/[^-\d\.]/g, '');
+		var pLeft = p.css('left').replace(/[^-\d\.]/g, '');
+		
+		var drift = _.random(-64, 64);
+		var driftString = '';
+		
+		if (drift < 0) {
+			driftString = '-=' + Math.abs(drift);
+		} else {
+			driftString = '+=' + Math.abs(drift);
+		}
+		
+		p.animate({
+			'top': '-=' + ((pOffsetTop - pTop) + p.height() + 32),
+			'left': driftString
+		}, 400, function() {
+			$('#button').removeClass('working');
+			$('#button').on('click', getComplment);
+		});
+	};
 	
-	p.animate({
-		'top': -((pOffsetTop - pTop) + p.height() + 32) + 'px'
-	}, 400);
+	$('#button').on('click', getComplment);
 	
 });
 </script>
