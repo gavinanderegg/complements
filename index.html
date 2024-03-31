@@ -1,0 +1,146 @@
+<!doctype html>
+<head>
+	<meta charset="utf-8">
+	<title>Compliments Webste</title>
+	<meta name="description" content="Compliments Webste - by Gavin Anderegg">
+	<meta name="viewport" content="width=device-width">
+	<link rel="stylesheet" href="/css/reset.css">
+	<link rel="stylesheet" href="/css/sweetalert.css">
+	<link rel="stylesheet" href="/css/main.css">
+	<style>
+	
+	
+	#paper {
+		display: block;
+		width: 114px;
+		height: 111px;
+		position: absolute;
+		top: 92px;
+		left: 84px;
+		z-index: 64;
+		background-image: url(/img/crumpled-paper.png);
+		background-size: 100%;
+		background-position: center center;
+		background-repeat: no-repeat;
+	}
+	
+	#vase {
+		position: relative;
+		width: 285px;
+		margin: auto;
+	}
+	
+	#vase-back {
+		display: block;
+		position: absolute;
+		top: 48px;
+		left: 0;
+		z-index: 32;
+		margin: auto;
+		width: 285px;
+		height: 38px;
+		background-image: url(/img/vase-back.png);
+		background-size: contain;
+		background-position: top center;
+		background-repeat: no-repeat;
+	}
+	
+	#vase-front {
+		display: block;
+		position: absolute;
+		z-index: 128;
+		top: 48px;
+		left: 0;
+		margin: auto;
+		width: 285px;
+		height: 400px;
+		background-image: url(/img/vase-front.png);
+		background-size: 100%;
+		background-position: top middle;
+		background-repeat: no-repeat;
+	}
+	</style>
+</head>
+
+<body>
+	
+	<div id="main">
+		<h1>Compliment?</h1>
+		
+		<div class="button">
+			<button class="punch" id="button">Yes, please!</button>
+		</div>
+		
+		<div id="vase">
+			<div id="vase-back"></div>
+			<div id="paper"></div>
+			<div id="vase-front"></div>
+		</div>
+	</div>
+	
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="http://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+<script src="/js/sweetalert.min.js"></script>
+<script src="/js/lodash.js"></script>
+<script>
+$(document).ready(function() {
+	$('#main').height($(window).height());
+	var complements = [];
+	var compQueue = [];
+	
+	Parse.initialize('GviO2IKm8WwNBuYSlRaMk5wtoCtox04ZwmyTCzyB', 'dMYQ9GT975VRBX4lAjohJyzwhjOR2cxC9HZ0dKbd'); // read-only key
+	var Complement = Parse.Object.extend('complement');
+	var query = new Parse.Query(Complement);
+	query.equalTo('type', 'normal');
+	query.find({
+		success: function(comps) {
+			complements = comps;
+		}
+	});
+	
+	var getComplment = function() {
+		$('#button').addClass('working');
+		$('#button').off('click');
+		
+		if (compQueue.length === 0) {
+			compQueue = _.shuffle(complements);
+		}
+		
+		var p = $('#paper');
+		p.css('top', '92px');
+		p.css('left', '84px');
+		var pOffsetTop = p.offset().top;
+		var pTop = p.css('top').replace(/[^-\d\.]/g, '');
+		var pLeft = p.css('left').replace(/[^-\d\.]/g, '');
+		
+		var drift = _.random(-64, 64);
+		var driftString = '';
+		
+		if (drift < 0) {
+			driftString = '-=' + Math.abs(drift);
+		} else {
+			driftString = '+=' + Math.abs(drift);
+		}
+		
+		p.animate({
+			'top': '-=' + (parseInt(pOffsetTop) + parseInt(pTop) + p.height() + 32),
+			'left': driftString
+		}, 400, function() {
+			swal({
+				'title': '',
+				'text': compQueue.pop().get('text'),
+				'confirmButtonText': 'Thanks!',
+				'confirmButtonColor': '#4162a8'
+			});
+			$('#button').removeClass('working');
+			$('#button').on('click', getComplment);
+		});
+	};
+	
+	$('#button').on('click', getComplment);
+	
+});
+</script>
+</body>
+
+</html>
