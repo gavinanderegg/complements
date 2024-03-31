@@ -97,7 +97,12 @@ $(document).ready(function() {
 	// 	}
 	// });
 
-
+	async function fetchData() {
+		const response = await fetch(window.location.origin + '/comp.json');
+		complements = await response.json();
+		console.log(complements);
+	}
+	fetchData();
 
 	var getComplment = function() {
 		$('#button').addClass('working');
@@ -129,7 +134,7 @@ $(document).ready(function() {
 		}, 400, function() {
 			swal({
 				'title': '',
-				'text': compQueue.pop().get('text'),
+				'text': compQueue.pop(),
 				'confirmButtonText': 'Thanks!',
 				'confirmButtonColor': '#4162a8'
 			});
