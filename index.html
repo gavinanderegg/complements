@@ -4,9 +4,9 @@
 	<title>Compliments Webste</title>
 	<meta name="description" content="Compliments Webste - by Gavin Anderegg">
 	<meta name="viewport" content="width=device-width">
-	<link rel="stylesheet" href="/css/reset.css">
-	<link rel="stylesheet" href="/css/sweetalert.css">
-	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="./css/reset.css">
+	<link rel="stylesheet" href="./css/sweetalert.css">
+	<link rel="stylesheet" href="./css/main.css">
 	<style>
 
 
@@ -18,7 +18,7 @@
 		top: 92px;
 		left: 84px;
 		z-index: 64;
-		background-image: url(/img/crumpled-paper.png);
+		background-image: url("./img/crumpled-paper.png");
 		background-size: 100%;
 		background-position: center center;
 		background-repeat: no-repeat;
@@ -39,7 +39,7 @@
 		margin: auto;
 		width: 285px;
 		height: 38px;
-		background-image: url(/img/vase-back.png);
+		background-image: url("./img/vase-back.png");
 		background-size: contain;
 		background-position: top center;
 		background-repeat: no-repeat;
@@ -54,7 +54,7 @@
 		margin: auto;
 		width: 285px;
 		height: 400px;
-		background-image: url(/img/vase-front.png);
+		background-image: url("./img/vase-front.png");
 		background-size: 100%;
 		background-position: top middle;
 		background-repeat: no-repeat;
@@ -98,7 +98,7 @@ $(document).ready(function() {
 	// });
 
 	async function fetchData() {
-		const response = await fetch(window.location.origin + '/comp.json');
+		const response = await fetch('./comp.json');
 		complements = await response.json();
 		console.log(complements);
 	}
